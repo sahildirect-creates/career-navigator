@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+
+body {
+  color: #F0EDE6;
+  background: #0a0a0a;
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* React Flow custom styles */
+.react-flow__attribution {
+  display: none !important;
+}
+
+.react-flow__controls {
+  background: #111 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 8px !important;
+}
+
+.react-flow__controls-button {
+  background: #111 !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  fill: rgba(240, 237, 230, 0.6) !important;
+}
+
+.react-flow__controls-button:hover {
+  background: #1a1a1a !important;
+}
+
+.react-flow__minimap {
+  background: #111 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 8px !important;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
