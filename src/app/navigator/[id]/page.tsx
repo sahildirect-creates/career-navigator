@@ -249,7 +249,6 @@ export default function NavigatorPage() {
                   </p>
 
                   {(() => {
-                    const nodeMap = new Map(data.nodes.map(n => [n.id, n]));
                     const grouped = new Map<string, Resource[]>();
                     const ungrouped: Resource[] = [];
 
