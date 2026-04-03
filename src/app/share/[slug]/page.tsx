@@ -173,7 +173,6 @@ export default function SharePage() {
 
                 {(() => {
                   const nodes = data.roadmap_json.nodes;
-                  const nodeMap = new Map(nodes.map(n => [n.id, n]));
                   const grouped = new Map<string, Resource[]>();
                   const ungrouped: Resource[] = [];
 
