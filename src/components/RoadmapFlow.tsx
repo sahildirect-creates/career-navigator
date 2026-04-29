@@ -30,6 +30,8 @@ interface RoadmapEdge {
 interface RoadmapFlowProps {
   nodes: RoadmapNode[];
   edges: RoadmapEdge[];
+  embed?: boolean;
+  height?: number;
 }
 
 const typeColors: Record<string, { bg: string; border: string; text: string }> =
@@ -89,7 +91,12 @@ function CustomNode({ data }: { data: Record<string, unknown> }) {
 
 const nodeTypes = { custom: CustomNode };
 
-export default function RoadmapFlow({ nodes, edges }: RoadmapFlowProps) {
+export default function RoadmapFlow({
+  nodes,
+  edges,
+  embed = false,
+  height,
+}: RoadmapFlowProps) {
   const [selectedNode, setSelectedNode] = useState<RoadmapNode | null>(null);
 
   const flowNodes: Node[] = useMemo(() => {
@@ -131,16 +138,23 @@ export default function RoadmapFlow({ nodes, edges }: RoadmapFlowProps) {
 
   const onNodeClick = useCallback(
     (_: React.MouseEvent, node: Node) => {
+      if (embed) return;
       const original = nodes.find((n) => n.id === node.id);
       if (original) {
         setSelectedNode(original);
       }
     },
-    [nodes]
+    [nodes, embed]
   );
 
+  const heightStyle = height ? { height } : undefined;
+  const heightClass = height ? "" : "h-[500px]";
+
   return (
-    <div className="w-full h-[500px] bg-background rounded-xl border border-white/5 overflow-hidden">
+    <div
+      className={`w-full ${heightClass} bg-background rounded-xl border border-white/5 overflow-hidden`}
+      style={heightStyle}
+    >
       <ReactFlow
         nodes={flowNodes}
         edges={flowEdges}
@@ -150,29 +164,38 @@ export default function RoadmapFlow({ nodes, edges }: RoadmapFlowProps) {
         fitViewOptions={{ padding: 0.3 }}
         nodesDraggable={false}
         nodesConnectable={false}
-        elementsSelectable={true}
+        elementsSelectable={!embed}
+        zoomOnScroll={!embed}
+        zoomOnPinch={!embed}
+        panOnDrag={!embed}
         minZoom={0.3}
         maxZoom={1.5}
         proOptions={{ hideAttribution: true }}
       >
         <Background color="#333" gap={20} />
-        <Controls
-          className="!bg-card !border-white/10 !rounded-lg [&>button]:!bg-card [&>button]:!border-white/10 [&>button]:!text-foreground/60 [&>button:hover]:!bg-card-hover"
-        />
-        <MiniMap
-          nodeColor={(node) => {
-            const colors = typeColors[(node.data?.nodeType as string) || "skill"];
-            return colors.border;
-          }}
-          maskColor="rgba(0,0,0,0.7)"
-          className="!bg-card !border-white/10 !rounded-lg"
-        />
+        {!embed && (
+          <Controls
+            className="!bg-card !border-white/10 !rounded-lg [&>button]:!bg-card [&>button]:!border-white/10 [&>button]:!text-foreground/60 [&>button:hover]:!bg-card-hover"
+          />
+        )}
+        {!embed && (
+          <MiniMap
+            nodeColor={(node) => {
+              const colors = typeColors[(node.data?.nodeType as string) || "skill"];
+              return colors.border;
+            }}
+            maskColor="rgba(0,0,0,0.7)"
+            className="!bg-card !border-white/10 !rounded-lg"
+          />
+        )}
       </ReactFlow>
 
-      <NodeDrawer
-        node={selectedNode}
-        onClose={() => setSelectedNode(null)}
-      />
+      {!embed && (
+        <NodeDrawer
+          node={selectedNode}
+          onClose={() => setSelectedNode(null)}
+        />
+      )}
     </div>
   );
 }
